@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.woof
 
 import android.os.Bundle
@@ -46,6 +48,10 @@ import com.example.woof.data.dogs
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import com.example.woof.ui.theme.WoofTheme
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Alignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +74,11 @@ class MainActivity : ComponentActivity() {
  */
 @Composable
 fun WoofApp() {
-    Scaffold { it ->
+    Scaffold(
+        topBar = {
+            WoofTopAppBar()
+        }
+    ) { it ->
         LazyColumn(contentPadding = it) {
             items(dogs) {
                 DogItem(
@@ -172,4 +182,29 @@ fun WoofDarkThemePreview() {
     WoofTheme(darkTheme = true) {
         WoofApp()
     }
+}
+
+@Composable
+fun WoofTopAppBar(modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.image_size))
+                        .padding(dimensionResource(id = R.dimen.padding_small)),
+                    painter = painterResource(R.drawable.ic_woof_logo),
+
+                    contentDescription = null
+                )
+                Text(
+                    text = stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.displayLarge
+                )
+            }
+        },
+        modifier = modifier
+    )
 }
